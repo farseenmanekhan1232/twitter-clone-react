@@ -1,0 +1,15 @@
+@import url("https://fonts.googleapis.com/css2?family=Agdasima&family=Poppins:wght@300&display=swap");
+* {
+  font-family: "Poppins", sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+a:hover {
+  cursor: pointer;
+}
+
+button:hover {
+  cursor: pointer;
+}

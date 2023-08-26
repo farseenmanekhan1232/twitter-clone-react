@@ -1,0 +1,28 @@
+.profile {
+  padding: 0 10rem;
+  .aboutcard {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+    justify-content: space-around;
+    img {
+      clip-path: circle();
+      object-fit: cover;
+      width: 120px;
+      height: 120px;
+    }
+  }
+
+  .tweets {
+    margin-top: 5rem;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+  }
+  .error {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

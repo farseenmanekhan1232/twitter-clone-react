@@ -1,0 +1,23 @@
+.container {
+  transition: 300ms;
+}
+
+.user {
+  //   margin: 20px 0 20px 0;
+  padding: 15px;
+  display: flex;
+
+  a {
+    display: flex;
+    border: 0;
+    align-items: center;
+    .info {
+      margin-left: 15px;
+    }
+    img {
+      clip-path: circle();
+      height: 30px;
+      width: 30px;
+    }
+  }
+}

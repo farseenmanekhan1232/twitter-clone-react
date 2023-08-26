@@ -1,0 +1,25 @@
+.othernav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .container {
+    a {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      width: 200px;
+      .heading {
+        color: rgb(0, 0, 0);
+        font-weight: bolder;
+        font-size: 3rem;
+        transition: 400ms;
+      }
+      .logo {
+        position: absolute;
+        top: 0%;
+        right: 0%;
+      }
+    }
+  }
+}
