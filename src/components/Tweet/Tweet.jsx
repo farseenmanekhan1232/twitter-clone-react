@@ -11,6 +11,7 @@ import { likePost } from "../../app/features/posts/asyncActions";
 import { dislikePost } from "../../app/features/posts/asyncActions";
 
 import styles from "./Tweet.module.scss";
+import dayjs from "dayjs";
 
 const Tweet = ({ post, index }) => {
   const [showInput, toggleInput] = useState(false);
@@ -55,7 +56,9 @@ const Tweet = ({ post, index }) => {
             {post.profilename ? `${post.profilename} |` : ""}@{post.username}
           </Link>
         </div>
-        <div className={styles.date}>{post.createdAt}</div>
+        <div className={styles.date}>
+          {dayjs(post.createdAt).format("HH:mm DD/MM/YY")}
+        </div>
         <div>{post.text}</div>
       </div>
       <div className={styles.icons}>
@@ -70,12 +73,12 @@ const Tweet = ({ post, index }) => {
         ) : (
           <></>
         )}
-        <div className={styles.icon}>
+        {/* <div className={styles.icon}>
           <FontAwesomeIcon icon={faComment} />
         </div>
         <div className={styles.icon}>
           <FontAwesomeIcon icon={faRetweet} />
-        </div>
+        </div> */}
       </div>
     </div>
   );

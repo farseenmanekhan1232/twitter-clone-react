@@ -8,8 +8,9 @@ const WritePost = ({ signedIn }) => {
   const [value, changeValue] = useState("");
   const dispatch = useDispatch();
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     dispatch(newPost({ text: value }, dispatch));
+    fetchAllPosts();
     changeValue("");
   };
 
