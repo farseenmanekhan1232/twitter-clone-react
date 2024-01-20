@@ -1,28 +1,36 @@
-import { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
-
-import Tweets from "../../components/Tweets/Tweets";
-import Loading from "../../components/Loading/Loading";
-
-import { getUserPosts } from "../../app/features/posts/asyncActions";
-import { getUserDetails } from "../../app/features/interactions/asyncActions";
-
 import noprofile from "../../assets/noprofile.png";
 import styles from "./Profile.module.scss";
 
-const Profile = () => {
-  const userDetails = useSelector((state) => state.interaction.userDetails);
-  console.log(userDetails);
-  const posts = useSelector((state) => state.posts.userPosts);
-  const { id } = useParams();
-  const dispatch = useDispatch();
+// Assuming RootState is the type of your entire Redux state
+import { AppDispatch, RootState } from "../../app/store";
+import { getUserDetails } from "../../app/features/interactions/asyncActions";
+import { getUserPosts } from "../../app/features/posts/asyncActions";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
+import Loading from "../../components/Loading/Loading";
+import Tweets from "../../components/Tweets/Tweets";
+
+interface ProfileParams {
+  [key: string]: string | undefined;
+  id?: string;
+}
+
+const Profile: React.FC = () => {
+  const userDetails = useSelector(
+    (state: RootState) => state.interaction.userDetails
+  );
+  const posts = useSelector((state: RootState) => state.posts.userPosts);
+  const { id } = useParams<ProfileParams>();
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    dispatch(getUserDetails({ username: id }));
-    dispatch(getUserPosts({ username: id }));
-  }, [id]);
+    if (id) {
+      dispatch(getUserDetails({ username: id }));
+      dispatch(getUserPosts(id));
+    }
+  }, [id, dispatch]);
+
   return (
     <div className={styles.profile}>
       {userDetails != "pending" && userDetails ? (

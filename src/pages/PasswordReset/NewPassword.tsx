@@ -1,8 +1,7 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 
 import Logo from "../../components/Logo/Logo";
-
 import {
   faCheck,
   faTimes,
@@ -14,24 +13,28 @@ import styles from "./reset.module.scss";
 
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
-const NewPassword = () => {
-  const { token } = useParams();
-  const [pwd, setPwd] = useState("");
-  const [validPwd, setValidPwd] = useState(false);
-  const [pwdFocus, setPwdFocus] = useState(false);
+interface NewPasswordParams {
+  token: string;
+}
 
-  const [matchPwd, setMatchPwd] = useState("");
-  const [validMatch, setValidMatch] = useState(false);
-  const [matchFocus, setMatchFocus] = useState(false);
-
-  const [response, getResponse] = useState("");
+const NewPassword: React.FC = () => {
+  // const { token } = useParams<NewPasswordParams>();
+  const [pwd, setPwd] = useState<string>("");
+  const [validPwd, setValidPwd] = useState<boolean>(false);
+  const [pwdFocus, setPwdFocus] = useState<boolean>(false);
+  const [matchPwd, setMatchPwd] = useState<string>("");
+  const [validMatch, setValidMatch] = useState<boolean>(false);
+  const [matchFocus, setMatchFocus] = useState<boolean>(false);
+  const [response, getResponse] = useState<string>("");
 
   useEffect(() => {
     setValidPwd(PWD_REGEX.test(pwd));
     setValidMatch(pwd === matchPwd);
   }, [pwd, matchPwd]);
 
-  const handleSubmit = async () => {};
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  };
 
   return (
     <div className={styles.newpassword}>

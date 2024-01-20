@@ -1,5 +1,4 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { combineReducers } from "@reduxjs/toolkit";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import {
   persistStore,
   persistReducer,
@@ -15,6 +14,13 @@ import localStorage from "redux-persist/es/storage";
 import { usersReducer } from "./features/users/usersSlice";
 import postsReducer from "./features/posts/postsSlice";
 import interactionsReducer from "./features/interactions/interactionSlice";
+
+// Define the root state type
+export interface RootState {
+  users: ReturnType<typeof usersReducer>;
+  posts: ReturnType<typeof postsReducer>;
+  interaction: ReturnType<typeof interactionsReducer>;
+}
 
 const rootReducer = combineReducers({
   users: usersReducer,
@@ -38,4 +44,7 @@ export const store = configureStore({
       },
     }),
 });
+
+export type AppDispatch = typeof store.dispatch;
+
 export const persistor = persistStore(store);

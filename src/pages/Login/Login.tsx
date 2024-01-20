@@ -1,43 +1,51 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios"; // Ensure you're using axios
 
 import { signIn } from "../../app/features/users/asyncActions";
 
 import styles from "./Login.module.scss";
 import Logo from "../../components/Logo/Logo";
 
-const Login = () => {
-  const dispatch = useDispatch();
+// Assuming RootState is the type of your entire Redux state
+import { AppDispatch, RootState } from "../../app/store";
+
+interface LoginData {
+  email: string;
+  password: string;
+}
+
+const Login: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
-  const signedIn = useSelector((state) => state.users.signedIn);
+  const signedIn = useSelector((state: RootState) => state.users.signedIn);
+  const failedSignIn = useSelector(
+    (state: RootState) => state.users.failedSignIn
+  );
 
-  const failedSignIn = useSelector((state) => state.users.failedSignIn);
   useEffect(() => {
-    if (signedIn) {
-      if (signedIn.is_verified) {
-        navigate("/");
-      } else {
-        navigate("/verify");
-      }
+    if (signedIn && signedIn.is_verified) {
+      navigate(signedIn.is_verified ? "/" : "/verify");
     }
-  }, [signedIn]);
+  }, [signedIn, navigate]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append("email", email);
-    formData.append("password", password);
+
+    const formData: LoginData = {
+      email: email,
+      password: password,
+    };
     dispatch(signIn(formData));
   };
 
   return (
     <div className={styles.login}>
+      <Logo />
       <Logo />
       <section>
         <h1>Login</h1>

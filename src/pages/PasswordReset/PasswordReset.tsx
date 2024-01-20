@@ -1,31 +1,28 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import axios from "axios";
 
 import Logo from "../../components/Logo/Logo";
 import styles from "./reset.module.scss";
 
-const PasswordReset = () => {
-  const [value, changeValue] = useState("");
-  const [response, getResponse] = useState("");
-  const handleSubmit = async () => {
-    const email = value;
+const PasswordReset: React.FC = () => {
+  const [email, setEmail] = useState<string>("");
+  const [response, setResponse] = useState<string>("");
+
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault(); // Prevent default button click behavior
 
     try {
-      await axios({
+      const res = await axios({
         method: "post",
         url: "http://localhost:8000/forgotPassword",
-        data: JSON.stringify(formdata),
+        data: JSON.stringify({ email }), // Ensure the data is correct
         headers: {
           "Content-Type": "application/json",
         },
-      })
-        .then((res) => {
-          getResponse(res.message);
-        })
-        .catch((error) => {
-          getResponse(undefined);
-        });
-    } catch {
-      getResponse(undefined);
+      });
+      setResponse(res.data.message); // Assuming the response has a message field
+    } catch (error) {
+      setResponse("Error occurred. Please try again."); // Generic error message
     }
   };
 
@@ -37,7 +34,13 @@ const PasswordReset = () => {
           <form action="">
             <h1>Reset Password</h1>
             <label htmlFor="email-username">Email</label>
-            <input id="email-username" type="text" onChange={changeValue} />
+            <input
+              id="email-username"
+              type="text"
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
+            />
             <button onClick={handleSubmit}>
               Reset
               <svg

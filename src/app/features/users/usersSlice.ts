@@ -1,8 +1,13 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { currentUser, signIn, signOut, register } from "./asyncActions";
 
-import { currentUser, signIn, signOut, register } from "./asyncActions.js";
+interface UserState {
+  signedIn: any; // Replace 'any' with the type of your user object
+  failedSignIn: boolean;
+  registered: boolean;
+}
 
-const initialState = {
+const initialState: UserState = {
   signedIn: null,
   failedSignIn: false,
   registered: false,
@@ -24,19 +29,19 @@ const usersSlice = createSlice({
       .addCase(signIn.rejected, (state) => {
         state.failedSignIn = true;
       })
-      .addCase(signIn.fulfilled, (state, action) => {
+      .addCase(signIn.fulfilled, (state, action: PayloadAction<any>) => {
+        // Replace 'any' with the correct type
         state.signedIn = action.payload.user;
         state.failedSignIn = false;
       })
-      .addCase(signOut.fulfilled, (state, action) => {
-        console.log(action.payload);
+      .addCase(signOut.fulfilled, (state) => {
         state.signedIn = null;
       })
-      .addCase(currentUser.rejected, (state, action) => {
+      .addCase(currentUser.rejected, (state) => {
         state.signedIn = null;
       });
   },
 });
 
 export const usersReducer = usersSlice.reducer;
-export const removeRegisteredTag = usersSlice.actions.removeRegisteredTag;
+export const { removeRegisteredTag } = usersSlice.actions;

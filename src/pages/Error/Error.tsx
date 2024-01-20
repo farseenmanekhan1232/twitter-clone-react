@@ -1,4 +1,6 @@
-const Error = () => (
+import React from "react";
+
+const Error: React.FC = () => (
   <div
     style={{
       height: "100%",
@@ -8,7 +10,8 @@ const Error = () => (
       alignItems: "center",
     }}
   >
-    <h1>Error Occured</h1>
+    <h1>Error Occurred</h1>
   </div>
 );
+
 export default Error;

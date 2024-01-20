@@ -1,6 +1,7 @@
+import React from "react";
 import styles from "./Loading.module.scss";
 
-const Loading = () => {
+const Loading: React.FC = () => {
   return (
     <div className={styles.container}>
       <div className={styles.lineProgressBar}></div>

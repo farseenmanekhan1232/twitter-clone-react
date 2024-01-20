@@ -3,13 +3,14 @@ import { fetchAllPosts, newPost } from "../../app/features/posts/asyncActions";
 import { useDispatch } from "react-redux";
 
 import styles from "./WritePost.module.scss";
+import { AppDispatch } from "../../app/store";
 
-const WritePost = ({ signedIn }) => {
+const WritePost = ({ signedIn }: { signedIn: boolean }) => {
   const [value, changeValue] = useState("");
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleSubmit = async () => {
-    dispatch(newPost({ text: value }, dispatch));
+    dispatch(newPost({ text: value }));
     fetchAllPosts();
     changeValue("");
   };
@@ -17,7 +18,6 @@ const WritePost = ({ signedIn }) => {
   return signedIn ? (
     <div className={styles.writepost}>
       <textarea
-        type="text"
         value={value}
         onChange={(v) => {
           changeValue(v.target.value);

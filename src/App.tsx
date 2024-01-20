@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
-import { Routes } from "react-router-dom";
-import { Route } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Routes, Route } from "react-router-dom";
 import Nav from "./components/Nav/Nav";
 import Home from "./pages/Home/Home";
 import Register from "./pages/Register/Register";
@@ -13,13 +12,18 @@ import F04 from "./pages/404/404";
 import Error from "./pages/Error/Error";
 
 import { useSelector } from "react-redux";
-
 import styles from "./App.module.scss";
 
-const App = () => {
-  const signedIn = useSelector((state) => state.users.signedIn);
+// Assuming you have a RootState type defined for your Redux state
+import { RootState } from "../src/app/store";
 
-  useEffect;
+const App: React.FC = () => {
+  const signedIn = useSelector((state: RootState) => state.users.signedIn);
+
+  useEffect(() => {
+    // Example logic; replace with your actual use case
+    console.log("App component mounted");
+  }, []);
 
   return (
     <div className={styles.app}>
@@ -33,30 +37,9 @@ const App = () => {
             </div>
           }
         />
-        <Route
-          path="/register"
-          element={
-            <>
-              <Register />
-            </>
-          }
-        />
-        <Route
-          path="/verify"
-          element={
-            <>
-              <VerificationNotice />
-            </>
-          }
-        />
-        <Route
-          path="/login"
-          element={
-            <>
-              <Login />
-            </>
-          }
-        />
+        <Route path="/register" element={<Register />} />
+        <Route path="/verify" element={<VerificationNotice />} />
+        <Route path="/login" element={<Login />} />
         <Route
           path="/profile/:id"
           element={
@@ -66,22 +49,8 @@ const App = () => {
             </div>
           }
         />
-        <Route
-          path="/passwordreset"
-          element={
-            <>
-              <PasswordReset />
-            </>
-          }
-        />
-        <Route
-          path="/change-password/:token"
-          element={
-            <>
-              <NewPassword />
-            </>
-          }
-        />
+        <Route path="/passwordreset" element={<PasswordReset />} />
+        <Route path="/change-password/:token" element={<NewPassword />} />
         <Route path="/error" element={<Error />} />
         <Route path="*" element={<F04 />} />
       </Routes>
@@ -90,3 +59,5 @@ const App = () => {
 };
 
 export default App;
+
+// Optional: SCSS Module Types

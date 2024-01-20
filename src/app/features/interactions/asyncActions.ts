@@ -1,22 +1,16 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-
 import { getData, postData } from "../api";
 
 export const getUserDetails = createAsyncThunk(
   "interaction/getUserDetails",
-  async ({ username }) => {
-    let user = await getData(`api/users/${username}`);
-    if (user && user.username) {
-      return user;
-    } else {
-      return null;
-    }
+  async ({ username }: { username: string }) => {
+    return await getData(`api/users/${username}`);
   }
 );
 
 export const getUserName = createAsyncThunk(
   "interaction/getUserName",
-  async ({ username }) => {
+  async ({ username }: { username: string }) => {
     return await postData(`api/search/${username}`);
   }
 );

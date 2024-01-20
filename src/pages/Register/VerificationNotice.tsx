@@ -1,4 +1,6 @@
-const VerificationNotice = () => (
+import React from "react";
+
+const VerificationNotice: React.FC = () => (
   <div
     style={{
       fontSize: "2rem",

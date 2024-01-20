@@ -1,39 +1,49 @@
-import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faComment } from "@fortawesome/free-regular-svg-icons";
-import { faRetweet } from "@fortawesome/free-solid-svg-icons";
-import { faHeart as faSolidHeart } from "@fortawesome/free-solid-svg-icons";
-
-import { likePost } from "../../app/features/posts/asyncActions";
-import { dislikePost } from "../../app/features/posts/asyncActions";
-
+import {
+  faRetweet,
+  faHeart as faSolidHeart,
+} from "@fortawesome/free-solid-svg-icons";
+import { likePost, dislikePost } from "../../app/features/posts/asyncActions";
+import { AppDispatch, RootState } from "../../app/store";
 import styles from "./Tweet.module.scss";
 import dayjs from "dayjs";
 
-const Tweet = ({ post, index }) => {
+// Define the type for the post prop
+interface PostType {
+  _id: string;
+  username: string;
+  profilename?: string;
+  createdAt: string;
+  text: string;
+  likes: Array<{ username: string }>;
+  // Add other post properties as needed
+}
+
+interface TweetProps {
+  post: PostType;
+  index: number;
+}
+
+const Tweet: React.FC<TweetProps> = ({ post, index }) => {
   const [showInput, toggleInput] = useState(false);
-  const dispatch = useDispatch();
   const [like, setLike] = useState(false);
   const [tempLike, setTempLike] = useState(0);
-  const signedIn = useSelector((state) => state.users.signedIn);
+  const signedIn = useSelector((state: RootState) => state.users.signedIn);
+  const dispatch = useDispatch<AppDispatch>();
+
   useEffect(() => {
     if (signedIn) {
       toggleInput(true);
-      console.log(post);
-      const liked = post.likes.filter(
-        (like) => like.username == signedIn.username
+      const liked = post.likes.some(
+        (like) => like.username === signedIn.username
       );
-      console.log(liked);
-      if (liked.length == 1) {
-        setLike(true);
-      } else {
-        setLike(false);
-      }
+      setLike(liked);
     }
-  }, []);
+  }, [signedIn, post.likes]);
 
   const handleClick = () => {
     if (like) {
@@ -68,7 +78,9 @@ const Tweet = ({ post, index }) => {
               icon={like ? faSolidHeart : faHeart}
               onClick={handleClick}
             />
-            <div styles={styles.likeCount}>{post.likes.length + tempLike}</div>
+            <div className={styles.likeCount}>
+              {post.likes.length + tempLike}
+            </div>
           </div>
         ) : (
           <></>

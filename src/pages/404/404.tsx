@@ -1,4 +1,6 @@
-const F04 = () => (
+import React from "react";
+
+const F04: React.FC = () => (
   <div
     style={{
       height: "100%",
@@ -11,4 +13,5 @@ const F04 = () => (
     <h1>404 Page Not Found</h1>
   </div>
 );
+
 export default F04;

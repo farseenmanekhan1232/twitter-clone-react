@@ -1,60 +1,65 @@
-import { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
-import styles from "./Register.module.scss";
+import { useNavigate, Link } from "react-router-dom";
 import { register } from "../../app/features/users/asyncActions";
-
 import Logo from "../../components/Logo/Logo";
-
 import {
   faCheck,
   faTimes,
   faInfoCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import styles from "./Register.module.scss";
+
+interface RegistrationData {
+  username: string;
+  email: string;
+  password: string;
+  profilename?: string; // Optional field, depending on your form
+  // Any additional registration fields
+}
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const EMAIL_REGEX =
   /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-]+)(\.[a-zA-Z]{2,5}){1,2}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
-const Register = () => {
-  const dispatch = useDispatch();
+// Assuming RootState is the type of your entire Redux state
+import { AppDispatch, RootState } from "../../app/store";
+
+const Register: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-  const userRef = useRef();
-  const emailRef = useRef();
-  const errRef = useRef();
+  const userRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const errRef = useRef<HTMLParagraphElement>(null);
 
-  const [profile, setProfile] = useState("");
+  const [profile, setProfile] = useState<string>("");
 
-  const [user, setUser] = useState("");
-  const [validName, setValidName] = useState(false);
-  const [userFocus, setUserFocus] = useState(false);
+  const [user, setUser] = useState<string>("");
+  const [validName, setValidName] = useState<boolean>(false);
+  const [userFocus, setUserFocus] = useState<boolean>(false);
 
-  const [email, setEmail] = useState("");
-  const [validEmail, setValidEmail] = useState(false);
-  const [emailFocus, setEmailFocus] = useState(false);
+  const [email, setEmail] = useState<string>("");
+  const [validEmail, setValidEmail] = useState<boolean>(false);
+  const [emailFocus, setEmailFocus] = useState<boolean>(false);
 
-  const [pwd, setPwd] = useState("");
-  const [validPwd, setValidPwd] = useState(false);
-  const [pwdFocus, setPwdFocus] = useState(false);
+  const [pwd, setPwd] = useState<string>("");
+  const [validPwd, setValidPwd] = useState<boolean>(false);
+  const [pwdFocus, setPwdFocus] = useState<boolean>(false);
 
-  const [matchPwd, setMatchPwd] = useState("");
-  const [validMatch, setValidMatch] = useState(false);
-  const [matchFocus, setMatchFocus] = useState(false);
+  const [matchPwd, setMatchPwd] = useState<string>("");
+  const [validMatch, setValidMatch] = useState<boolean>(false);
+  const [matchFocus, setMatchFocus] = useState<boolean>(false);
 
-  // const [selectedImage, setSelectedImage] = useState(null);
+  const [errMsg, setErrMsg] = useState<string>("");
 
-  const [errMsg, setErrMsg] = useState("");
-
-  const registered = useSelector((state) => state.users.registered);
+  const registered = useSelector((state: RootState) => state.users.registered);
 
   useEffect(() => {
-    userRef.current.focus();
+    userRef.current?.focus();
   }, []);
-
   useEffect(() => {
     setValidName(USER_REGEX.test(user));
   }, [user]);
@@ -77,7 +82,7 @@ const Register = () => {
       navigate("/verify");
     }
   }, [registered]);
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const v1 = USER_REGEX.test(user);
     const v2 = PWD_REGEX.test(pwd);
@@ -87,11 +92,13 @@ const Register = () => {
       return;
     }
 
-    let formdata = new FormData();
-    formdata.append("username", user);
-    formdata.append("profilename", profile);
-    formdata.append("password", pwd);
-    formdata.append("email", email);
+    let formdata: RegistrationData = {
+      username: user,
+      profilename: profile,
+      password: pwd,
+      email: email,
+    };
+
     // formdata.append("pp", selectedImage);
     dispatch(register(formdata));
   };
@@ -115,7 +122,7 @@ const Register = () => {
       <section>
         <p
           ref={errRef}
-          className={errMsg ? s.errmsg : styles.offscreen}
+          className={errMsg ? styles.errmsg : styles.offscreen}
           aria-live="assertive"
         >
           {errMsg}

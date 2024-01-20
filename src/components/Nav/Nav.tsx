@@ -1,18 +1,23 @@
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-
+import React from "react";
+import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { signOut } from "../../app/features/users/asyncActions";
-
 import Search from "../Search/Search";
-
-import { toggleWriteTweet } from "../../app/features/posts/postsSlice";
-
 import Noprofile from "../../assets/noprofile.png";
 import styles from "./Nav.module.scss";
+import { AppDispatch } from "../../app/store";
 
-const Nav = ({ signedIn }) => {
-  const dispatch = useDispatch();
+// Define the props type
+interface NavProps {
+  signedIn: {
+    username: string;
+    profilePicture?: string;
+  } | null;
+}
+
+const Nav: React.FC<NavProps> = ({ signedIn }) => {
+  const dispatch = useDispatch<AppDispatch>();
+
   console.log(signedIn);
   return (
     <div className={styles.nav}>
